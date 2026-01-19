@@ -1,0 +1,1242 @@
+/*
+=============================================================================
+QUANTUM PARTICLE SIMULATION - STYLES
+=============================================================================
+This CSS (Cascading Style Sheets) file defines how our HTML looks.
+
+CSS is like the interior designer of a webpage:
+- HTML provides the structure (walls, rooms)
+- CSS provides the aesthetics (paint, furniture, decorations)
+- JavaScript provides the functionality (plumbing, electricity)
+
+Key CSS Concepts Used:
+- Selectors: Target specific HTML elements to style
+- Properties: What to change (color, size, position)
+- Values: How to change it (red, 100px, center)
+- Glassmorphism: Modern design style with frosted glass effect
+- Flexbox: Layout system for arranging elements
+=============================================================================
+*/
+
+/*
+-----------------------------------------------------------------------------
+UNIVERSAL RESET AND BASE STYLES
+-----------------------------------------------------------------------------
+The universal selector (*) targets ALL elements on the page
+This is a common technique called "CSS reset" or "normalize"
+
+Why reset?
+- Browsers have default styles (margins, padding) that differ
+- Resetting creates a consistent starting point
+- We can then apply our own styles deliberately
+-----------------------------------------------------------------------------
+*/
+* {
+    /* 
+    Remove default margin and padding from all elements
+    Browsers add margin/padding to many elements (body, h1, p, etc.)
+    Starting from zero gives us full control
+    */
+    margin: 0;
+    padding: 0;
+    
+    /* 
+    box-sizing: border-box changes how width/height are calculated
+    
+    Default (content-box):
+        width = content only (padding and border add to total size)
+        Example: width: 100px + padding: 10px + border: 5px = 115px total
+    
+    border-box:
+        width = content + padding + border (more intuitive!)
+        Example: width: 100px includes padding and border = 100px total
+    
+    This makes layout math much easier!
+    */
+    box-sizing: border-box;
+}
+
+/*
+-----------------------------------------------------------------------------
+BODY STYLES - Overall Page Appearance
+-----------------------------------------------------------------------------
+The <body> element contains all visible content
+These styles affect the entire page background and text
+-----------------------------------------------------------------------------
+*/
+body {
+    /*
+    FONT FAMILY
+    Specifies which fonts to use, in order of preference
+    - 'Segoe UI': Windows system font (modern, clean)
+    - Tahoma: Fallback for older Windows
+    - Geneva: Mac fallback
+    - Verdana: Cross-platform fallback
+    - sans-serif: Generic fallback (any sans-serif font)
+    
+    Browser tries each font in order until it finds one installed
+    sans-serif at the end ensures something always works
+    */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+    /*
+    BACKGROUND COLOR
+    The page background color - we use dark for a "space" feel
+    #0a0a0a is a hexadecimal color code:
+    - # indicates hex color
+    - 0a = red channel (very dark)
+    - 0a = green channel (very dark)
+    - 0a = blue channel (very dark)
+    Result: Very dark gray (almost black)
+    
+    Why not pure black (#000000)?
+    Pure black can be harsh on screens and harder to read text on
+    Very dark gray is easier on the eyes
+    */
+    background-color: #0a0a0a;
+    
+    /*
+    TEXT COLOR
+    The default color for all text on the page
+    #ffffff is white (full intensity in all RGB channels)
+    White text on dark background = good contrast, easy to read
+    */
+    color: #ffffff;
+    
+    /*
+    OVERFLOW
+    Controls what happens when content is too big for the viewport
+    - hidden: Clip content and hide scrollbars
+    - scroll: Always show scrollbars
+    - auto: Show scrollbars only when needed
+    
+    We use hidden because our simulation is designed to fit the viewport
+    */
+    overflow: hidden;
+}
+
+/*
+-----------------------------------------------------------------------------
+HEADER STYLES
+-----------------------------------------------------------------------------
+The header contains our title and subtitle
+These styles center it and add spacing
+-----------------------------------------------------------------------------
+*/
+header {
+    /*
+    TEXT ALIGNMENT
+    Centers all text inside the header
+    - left: align to left (default)
+    - center: center horizontally
+    - right: align to right
+    */
+    text-align: center;
+    
+    /*
+    PADDING
+    Space inside the element (between content and border)
+    Format: padding: top/bottom left/right
+    
+    2rem top/bottom, 1rem left/right
+    
+    What is 'rem'?
+    - rem = "root em" (relative to root font size)
+    - 1rem typically = 16px (browser default)
+    - 2rem = 32px, 0.5rem = 8px
+    - Using rem (instead of px) makes the design responsive
+    - If user increases font size, spacing increases proportionally
+    */
+    padding: 2rem 1rem;
+    
+    /*
+    BACKGROUND
+    Creates a gradient background
+    
+    linear-gradient() creates a smooth color transition
+    Format: linear-gradient(direction, color1, color2, ...)
+    
+    to bottom: gradient goes from top to bottom
+    rgba(R, G, B, Alpha): color with transparency
+    - R, G, B: 0-255 (red, green, blue channels)
+    - Alpha: 0-1 (0 = fully transparent, 1 = fully opaque)
+    
+    rgba(30, 30, 60, 0.8): Dark blue-gray, 80% opaque
+    rgba(10, 10, 10, 0.9): Very dark gray, 90% opaque
+    
+    Result: Subtle gradient from slightly blue to neutral dark
+    The transparency allows the body background to show through slightly
+    */
+    background: linear-gradient(to bottom, rgba(30, 30, 60, 0.8), rgba(10, 10, 10, 0.9));
+}
+
+/*
+-----------------------------------------------------------------------------
+H1 HEADING STYLES
+-----------------------------------------------------------------------------
+The main title of the page
+We make it large and add some visual effects
+-----------------------------------------------------------------------------
+*/
+h1 {
+    /* 
+    FONT SIZE
+    2.5rem = 40px (if root font is 16px)
+    Large size makes the title prominent
+    */
+    font-size: 2.5rem;
+    
+    /* 
+    MARGIN BOTTOM
+    Space below the heading (pushes next element down)
+    Creates separation between title and subtitle
+    */
+    margin-bottom: 0.5rem;
+    
+    /* 
+    TEXT SHADOW
+    Creates a glowing effect around text
+    Format: text-shadow: x-offset y-offset blur-radius color
+    
+    0 0 20px: No offset (centered), 20px blur radius
+    rgba(100, 150, 255, 0.8): Light blue, 80% opaque
+    
+    Result: Blue glow around the text (sci-fi effect!)
+    */
+    text-shadow: 0 0 20px rgba(100, 150, 255, 0.8);
+}
+
+/*
+-----------------------------------------------------------------------------
+PARAGRAPH STYLES (inside header)
+-----------------------------------------------------------------------------
+The subtitle/description text
+Slightly transparent to make it less prominent than the title
+-----------------------------------------------------------------------------
+*/
+header p {
+    /*
+    OPACITY
+    Controls transparency of the entire element
+    - 0: fully transparent (invisible)
+    - 1: fully opaque (normal)
+    - 0.7: 70% opaque (slightly see-through)
+    
+    Making the subtitle less opaque creates visual hierarchy:
+    Title (opaque) = most important
+    Subtitle (70% opaque) = secondary
+    */
+    opacity: 0.7;
+}
+
+/*
+-----------------------------------------------------------------------------
+MAIN CONTAINER - Layout for Canvas and Control Panel
+-----------------------------------------------------------------------------
+This container uses Flexbox to arrange the canvas and control panel side by side
+Flexbox is a powerful layout system in CSS
+-----------------------------------------------------------------------------
+*/
+.container {
+    /*
+    DISPLAY: FLEX
+    Turns this element into a "flex container"
+    Its children become "flex items" that can be arranged flexibly
+    
+    Without flex: Elements stack vertically (default block layout)
+    With flex: Elements can be arranged horizontally, with precise control
+    */
+    display: flex;
+    
+    /*
+    HEIGHT
+    100vh = 100% of viewport height
+    vh = "viewport height" unit
+    - 1vh = 1% of browser window height
+    - 100vh = full browser window height
+    - 50vh = half browser window height
+    
+    This makes the container fill the entire screen vertically
+    minus the header
+    */
+    height: calc(100vh - 120px);  /* 120px is approximate header height */
+    
+    /*
+    GAP
+    Space between flex items (between canvas and control panel)
+    1rem = ~16px
+    
+    This is better than using margins because gap only appears BETWEEN items,
+    not at the edges
+    */
+    gap: 1rem;
+    
+    /*
+    PADDING
+    Space inside the container (around all content)
+    */
+    padding: 1rem;
+}
+
+/*
+-----------------------------------------------------------------------------
+CANVAS SECTION - Container for the Animation Canvas
+-----------------------------------------------------------------------------
+This section holds the canvas element where particles are drawn
+It takes up most of the screen width
+-----------------------------------------------------------------------------
+*/
+.canvas-section {
+    /*
+    FLEX: 3
+    This is shorthand for flex-grow: 3
+    
+    How flex-grow works:
+    - Distributes extra space among flex items
+    - If one item has flex: 3 and another has flex: 1, the first gets 3/4 of space
+    - In our layout: canvas gets 3 parts, control panel gets 1 part
+    - This means canvas is 3× wider than the control panel
+    
+    Example with 1000px total width:
+    - Canvas: 750px (3/4)
+    - Control panel: 250px (1/4)
+    */
+    flex: 3;
+    
+    /*
+    BACKGROUND COLOR
+    Dark background for the canvas container
+    #111111: Very dark gray (slightly lighter than body background)
+    */
+    background-color: #111111;
+    
+    /*
+    BORDER RADIUS
+    Rounds the corners of the element
+    10px = amount of rounding
+    
+    - 0px: Sharp square corners
+    - 5px: Slightly rounded
+    - 10px: Noticeably rounded (what we use)
+    - 50%: Fully circular (if element is square)
+    
+    Rounded corners are part of modern design aesthetics
+    */
+    border-radius: 10px;
+    
+    /*
+    OVERFLOW: HIDDEN
+    Clips any content that extends outside the rounded corners
+    Without this, the canvas corners would poke out of the rounded border
+    */
+    overflow: hidden;
+    
+    /*
+    POSITION: RELATIVE
+    Establishes a positioning context for child elements
+    If child elements use position: absolute, they position relative to this
+    
+    Not strictly necessary here but good practice for complex layouts
+    */
+    position: relative;
+}
+
+/*
+-----------------------------------------------------------------------------
+CANVAS ELEMENT STYLES
+-----------------------------------------------------------------------------
+The actual <canvas> element where JavaScript draws particles
+-----------------------------------------------------------------------------
+*/
+canvas {
+    /*
+    WIDTH AND HEIGHT
+    100% makes the canvas fill its container (canvas-section)
+    This makes the canvas responsive to container size
+    */
+    width: 100%;
+    height: 100%;
+    
+    /*
+    DISPLAY: BLOCK
+    By default, canvas is inline (like text)
+    Block makes it behave like a box that fills available width
+    
+    This also removes a small gap that appears below inline elements
+    */
+    display: block;
+}
+
+/*
+-----------------------------------------------------------------------------
+CONTROL PANEL - Glassmorphism Design
+-----------------------------------------------------------------------------
+The right panel with controls and statistics
+Uses "glassmorphism" - a modern design trend that looks like frosted glass
+-----------------------------------------------------------------------------
+*/
+.control-panel {
+    /*
+    FLEX: 1
+    Takes up 1 part of space (canvas takes 3, so this is 1/4 of total width)
+    */
+    flex: 1;
+    
+    /*
+    BACKGROUND
+    rgba(255, 255, 255, 0.05): White at 5% opacity
+    This creates a subtle white tint over the dark background
+    The transparency is key to glassmorphism
+    */
+    background: rgba(255, 255, 255, 0.05);
+    
+    /*
+    BACKDROP-FILTER: BLUR
+    This is the magic of glassmorphism!
+    
+    backdrop-filter applies effects to what's BEHIND the element
+    blur(10px): Blurs the background by 10 pixels
+    
+    Result: Frosted glass effect - you can see through but it's blurry
+    
+    Browser support note: Works in modern browsers, gracefully degrades in old ones
+    */
+    backdrop-filter: blur(10px);
+    
+    /*
+    BORDER
+    Creates a border around the panel
+    Format: width style color
+    
+    1px: Thin border
+    solid: Continuous line (vs dashed, dotted)
+    rgba(255, 255, 255, 0.1): White at 10% opacity (subtle)
+    */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /*
+    BORDER RADIUS
+    Rounds the corners (matches canvas-section)
+    */
+    border-radius: 10px;
+    
+    /*
+    PADDING
+    Space inside the panel (around content)
+    1.5rem = ~24px
+    */
+    padding: 1.5rem;
+    
+    /*
+    OVERFLOW-Y: AUTO
+    Vertical overflow behavior
+    - visible: Content extends outside (default)
+    - hidden: Content is clipped
+    - scroll: Always show scrollbar
+    - auto: Show scrollbar only when needed
+    
+    If control panel content is too tall, a scrollbar appears
+    */
+    overflow-y: auto;
+    
+    /*
+    MAX-WIDTH
+    Limits the panel width
+    300px: Maximum width even if there's more space
+    
+    This prevents the panel from getting too wide on very large screens
+    */
+    max-width: 300px;
+}
+
+/*
+-----------------------------------------------------------------------------
+PANEL SECTION - Subsections within Control Panel
+-----------------------------------------------------------------------------
+Each subsection (Controls, Statistics, Formulas, Legend) uses this style
+-----------------------------------------------------------------------------
+*/
+.panel-section {
+    /*
+    MARGIN BOTTOM
+    Space below each section (separates sections from each other)
+    */
+    margin-bottom: 2rem;
+}
+
+/*
+-----------------------------------------------------------------------------
+H2 HEADING STYLES - Section Headers
+-----------------------------------------------------------------------------
+Headers for each subsection in the control panel
+-----------------------------------------------------------------------------
+*/
+.panel-section h2 {
+    /*
+    FONT SIZE
+    1.2rem = ~19px (smaller than main h1, but larger than body text)
+    */
+    font-size: 1.2rem;
+    
+    /*
+    MARGIN BOTTOM
+    Space below the heading
+    */
+    margin-bottom: 1rem;
+    
+    /*
+    COLOR
+    Slightly blue-tinted white
+    #aaccff: Light blue (aa=red, cc=green, ff=blue)
+    Creates visual interest and ties into the "quantum" theme
+    */
+    color: #aaccff;
+    
+    /*
+    PADDING BOTTOM
+    Space below text but inside the element
+    */
+    padding-bottom: 0.5rem;
+    
+    /*
+    BORDER BOTTOM
+    A line under the heading
+    1px solid rgba(255, 255, 255, 0.2): Thin white line at 20% opacity
+    
+    This visually separates the heading from content
+    */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/*
+-----------------------------------------------------------------------------
+BUTTON GROUP - Container for Buttons
+-----------------------------------------------------------------------------
+Holds multiple buttons and arranges them
+-----------------------------------------------------------------------------
+*/
+.button-group {
+    /*
+    DISPLAY: FLEX
+    Uses flexbox to arrange buttons horizontally
+    */
+    display: flex;
+    
+    /*
+    GAP
+    Space between buttons
+    */
+    gap: 0.5rem;
+    
+    /*
+    MARGIN BOTTOM
+    Space below the button group
+    */
+    margin-bottom: 1rem;
+}
+
+/*
+-----------------------------------------------------------------------------
+BUTTON STYLES
+-----------------------------------------------------------------------------
+Styling for all buttons (Pause, Resume, Reset)
+Modern, clean design with hover effects
+-----------------------------------------------------------------------------
+*/
+button {
+    /*
+    FLEX: 1
+    All buttons in a flex container share space equally
+    If there are 2 buttons, each takes 50% width
+    */
+    flex: 1;
+    
+    /*
+    PADDING
+    Space inside button (makes it bigger and easier to click)
+    Format: top/bottom left/right
+    */
+    padding: 0.8rem 1rem;
+    
+    /*
+    BACKGROUND
+    Gradient background for visual interest
+    
+    linear-gradient(135deg, ...): Diagonal gradient (135° = bottom-left to top-right)
+    rgba(100, 150, 255, 0.3): Light blue, 30% opaque
+    rgba(150, 100, 255, 0.3): Light purple, 30% opaque
+    
+    Result: Subtle blue-to-purple diagonal gradient
+    */
+    background: linear-gradient(135deg, rgba(100, 150, 255, 0.3), rgba(150, 100, 255, 0.3));
+    
+    /*
+    COLOR
+    Text color (white)
+    */
+    color: white;
+    
+    /*
+    BORDER
+    No border (we're using background and shadow instead)
+    */
+    border: none;
+    
+    /*
+    BORDER RADIUS
+    Rounded corners (5px is subtly rounded)
+    */
+    border-radius: 5px;
+    
+    /*
+    CURSOR
+    Changes mouse cursor when hovering over button
+    - default: Normal arrow
+    - pointer: Hand with pointing finger (indicates clickable)
+    - text: I-beam (indicates text)
+    
+    pointer is standard for interactive elements
+    */
+    cursor: pointer;
+    
+    /*
+    FONT SIZE
+    Slightly larger than default text
+    */
+    font-size: 1rem;
+    
+    /*
+    FONT WEIGHT
+    How thick/bold the text is
+    - normal: 400 (default)
+    - bold: 700
+    - 600: Semi-bold (what we use)
+    */
+    font-weight: 600;
+    
+    /*
+    TRANSITION
+    Smooth animation when properties change
+    Format: property duration easing-function
+    
+    all: Animate all properties that change
+    0.3s: Animation lasts 0.3 seconds
+    ease: Easing function (starts slow, speeds up, slows down)
+    
+    This makes hover effects smooth instead of instant
+    */
+    transition: all 0.3s ease;
+}
+
+/*
+-----------------------------------------------------------------------------
+BUTTON HOVER EFFECT
+-----------------------------------------------------------------------------
+Styles applied when mouse hovers over a button
+The :hover pseudo-class triggers when cursor is over the element
+-----------------------------------------------------------------------------
+*/
+button:hover {
+    /*
+    BACKGROUND
+    Brighter gradient on hover (more opaque)
+    0.5 opacity (vs 0.3 normal) = 67% brighter
+    
+    This provides visual feedback that the button is interactive
+    */
+    background: linear-gradient(135deg, rgba(100, 150, 255, 0.5), rgba(150, 100, 255, 0.5));
+    
+    /*
+    TRANSFORM: TRANSLATEY
+    Moves the element on the Y axis
+    -2px: Move up 2 pixels
+    
+    This creates a subtle "lift" effect, like the button is rising
+    Combined with the shadow change (below), it looks 3D
+    */
+    transform: translateY(-2px);
+    
+    /*
+    BOX SHADOW
+    Creates a shadow around the element
+    Format: x-offset y-offset blur-radius spread-radius color
+    
+    0: Horizontal offset (centered horizontally)
+    4px: Vertical offset (shadow below element)
+    15px: Blur radius (how soft the shadow is)
+    rgba(100, 150, 255, 0.4): Blue shadow, 40% opaque
+    
+    The shadow gets bigger on hover, enhancing the "lift" effect
+    */
+    box-shadow: 0 4px 15px rgba(100, 150, 255, 0.4);
+}
+
+/*
+-----------------------------------------------------------------------------
+CONTROL GROUP - Container for Input Controls
+-----------------------------------------------------------------------------
+Each slider or checkbox with its label uses this style
+-----------------------------------------------------------------------------
+*/
+.control-group {
+    /*
+    MARGIN BOTTOM
+    Space below each control group
+    */
+    margin-bottom: 1.5rem;
+}
+
+/*
+-----------------------------------------------------------------------------
+LABEL STYLES
+-----------------------------------------------------------------------------
+Text labels describing inputs
+-----------------------------------------------------------------------------
+*/
+.control-group label {
+    /*
+    DISPLAY: BLOCK
+    Makes label take full width (forces next element to new line)
+    Without this, label and input would be side by side
+    */
+    display: block;
+    
+    /*
+    MARGIN BOTTOM
+    Space between label and input
+    */
+    margin-bottom: 0.5rem;
+    
+    /*
+    FONT SIZE
+    Slightly smaller than default
+    */
+    font-size: 0.9rem;
+    
+    /*
+    OPACITY
+    Slightly transparent (70% opaque)
+    Makes labels less prominent than values
+    */
+    opacity: 0.7;
+}
+
+/*
+-----------------------------------------------------------------------------
+RANGE INPUT (SLIDER) STYLES
+-----------------------------------------------------------------------------
+Custom styling for sliders
+By default, sliders look different in each browser
+These styles create a consistent, custom appearance
+-----------------------------------------------------------------------------
+*/
+input[type="range"] {
+    /*
+    WIDTH
+    Full width of container
+    */
+    width: 100%;
+    
+    /*
+    MARGIN
+    Space above and below slider
+    */
+    margin: 0.5rem 0;
+    
+    /*
+    APPEARANCE: NONE
+    Removes default browser styling
+    This lets us apply our own custom styles
+    Without this, some browsers ignore our custom styles
+    */
+    -webkit-appearance: none;
+    appearance: none;
+    
+    /*
+    HEIGHT
+    How tall the slider track is
+    */
+    height: 5px;
+    
+    /*
+    BACKGROUND
+    Color of the slider track
+    rgba(255, 255, 255, 0.2): White at 20% opacity (subtle gray)
+    */
+    background: rgba(255, 255, 255, 0.2);
+    
+    /*
+    BORDER RADIUS
+    Rounds the track (makes it pill-shaped)
+    */
+    border-radius: 5px;
+    
+    /*
+    OUTLINE
+    Removes focus outline (the blue line that appears when clicked)
+    We remove this because we'll add our own focus styles if needed
+    */
+    outline: none;
+}
+
+/*
+-----------------------------------------------------------------------------
+SLIDER THUMB (HANDLE) STYLES - WEBKIT BROWSERS
+-----------------------------------------------------------------------------
+The thumb is the draggable part of the slider
+Webkit browsers (Chrome, Safari) use ::-webkit-slider-thumb
+-----------------------------------------------------------------------------
+*/
+input[type="range"]::-webkit-slider-thumb {
+    /*
+    APPEARANCE: NONE
+    Remove default thumb styling
+    */
+    -webkit-appearance: none;
+    appearance: none;
+    
+    /*
+    WIDTH & HEIGHT
+    Size of the draggable circle
+    */
+    width: 18px;
+    height: 18px;
+    
+    /*
+    BORDER RADIUS
+    50% makes a square into a circle
+    */
+    border-radius: 50%;
+    
+    /*
+    BACKGROUND
+    Blue gradient for the thumb
+    */
+    background: linear-gradient(135deg, rgba(100, 150, 255, 0.8), rgba(150, 100, 255, 0.8));
+    
+    /*
+    CURSOR
+    Show pointer cursor when hovering over thumb
+    */
+    cursor: pointer;
+    
+    /*
+    BOX SHADOW
+    Adds a glow effect around the thumb
+    */
+    box-shadow: 0 0 10px rgba(100, 150, 255, 0.5);
+}
+
+/*
+-----------------------------------------------------------------------------
+SLIDER THUMB STYLES - FIREFOX
+-----------------------------------------------------------------------------
+Firefox uses different selectors for slider styling
+Same appearance as webkit, different selector
+-----------------------------------------------------------------------------
+*/
+input[type="range"]::-moz-range-thumb {
+    /* Same styles as webkit thumb */
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(100, 150, 255, 0.8), rgba(150, 100, 255, 0.8));
+    cursor: pointer;
+    border: none;  /* Firefox includes a border by default, remove it */
+    box-shadow: 0 0 10px rgba(100, 150, 255, 0.5);
+}
+
+/*
+-----------------------------------------------------------------------------
+CHECKBOX STYLES
+-----------------------------------------------------------------------------
+Custom styling for checkboxes
+We enhance the default checkbox appearance
+-----------------------------------------------------------------------------
+*/
+input[type="checkbox"] {
+    /*
+    MARGIN RIGHT
+    Space between checkbox and its label
+    */
+    margin-right: 0.5rem;
+    
+    /*
+    CURSOR
+    Show pointer cursor (indicates clickable)
+    */
+    cursor: pointer;
+    
+    /*
+    WIDTH & HEIGHT
+    Make checkbox larger than default (easier to click)
+    */
+    width: 18px;
+    height: 18px;
+}
+
+/*
+-----------------------------------------------------------------------------
+CHECKBOX LABEL STYLES
+-----------------------------------------------------------------------------
+Labels next to checkboxes get special treatment
+-----------------------------------------------------------------------------
+*/
+.control-group input[type="checkbox"] + label {
+    /*
+    DISPLAY: INLINE
+    Keep label on same line as checkbox (don't force to new line)
+    */
+    display: inline;
+    
+    /*
+    CURSOR
+    Clicking label also toggles checkbox, so show pointer
+    */
+    cursor: pointer;
+}
+
+/*
+-----------------------------------------------------------------------------
+STAT ROW - Statistics Display Row
+-----------------------------------------------------------------------------
+Each row in the statistics section shows a label and value
+-----------------------------------------------------------------------------
+*/
+.stat-row {
+    /*
+    DISPLAY: FLEX
+    Use flexbox to arrange label and value
+    */
+    display: flex;
+    
+    /*
+    JUSTIFY-CONTENT: SPACE-BETWEEN
+    Pushes label to left edge and value to right edge
+    - flex-start: All items at start
+    - flex-end: All items at end
+    - center: All items in center
+    - space-between: Items spread with max space between
+    */
+    justify-content: space-between;
+    
+    /*
+    MARGIN BOTTOM
+    Space between stat rows
+    */
+    margin-bottom: 0.8rem;
+    
+    /*
+    FONT SIZE
+    Slightly smaller text
+    */
+    font-size: 0.95rem;
+}
+
+/*
+-----------------------------------------------------------------------------
+STAT ROW VALUE (RIGHT SIDE)
+-----------------------------------------------------------------------------
+The actual statistic value (numbers)
+We make these stand out
+-----------------------------------------------------------------------------
+*/
+.stat-row span:last-child {
+    /*
+    FONT WEIGHT: BOLD
+    Makes the numbers bolder than labels
+    */
+    font-weight: bold;
+    
+    /*
+    COLOR
+    Light blue tint (matches theme)
+    */
+    color: #88bbff;
+}
+
+/*
+-----------------------------------------------------------------------------
+FORMULA DISPLAY STYLES
+-----------------------------------------------------------------------------
+Each formula is displayed in a box
+-----------------------------------------------------------------------------
+*/
+.formula {
+    /*
+    MARGIN BOTTOM
+    Space between formulas
+    */
+    margin-bottom: 1rem;
+    
+    /*
+    PADDING
+    Space inside the formula box
+    */
+    padding: 0.8rem;
+    
+    /*
+    BACKGROUND
+    Very subtle background
+    rgba(255, 255, 255, 0.03): Almost invisible white tint
+    Just enough to separate formulas from panel background
+    */
+    background: rgba(255, 255, 255, 0.03);
+    
+    /*
+    BORDER RADIUS
+    Slightly rounded corners
+    */
+    border-radius: 5px;
+    
+    /*
+    BORDER LEFT
+    Accent line on left side
+    3px: Thicker than usual border
+    solid: Continuous line
+    rgba(100, 150, 255, 0.5): Blue, 50% opaque
+    
+    This creates a nice "tab" effect
+    */
+    border-left: 3px solid rgba(100, 150, 255, 0.5);
+}
+
+/*
+-----------------------------------------------------------------------------
+CODE STYLES - Monospace Font for Formulas
+-----------------------------------------------------------------------------
+The <code> tag indicates code or formulas
+We use monospace font for clear reading
+-----------------------------------------------------------------------------
+*/
+.formula code {
+    /*
+    FONT FAMILY: MONOSPACE
+    Monospace fonts have equal character widths
+    - 'Courier New': Classic monospace font
+    - Courier: Fallback
+    - monospace: Generic fallback
+    
+    Examples of monospace: Courier, Consolas, Monaco
+    Examples of proportional: Arial, Times, Helvetica
+    
+    Why monospace for code/formulas?
+    - Characters align vertically
+    - Easier to read mathematical expressions
+    - Clear distinction from regular text
+    */
+    font-family: 'Courier New', Courier, monospace;
+    
+    /*
+    COLOR
+    Slightly yellow-tinted white
+    #ffffaa: Light yellow (makes formulas stand out)
+    */
+    color: #ffffaa;
+    
+    /*
+    FONT SIZE
+    Slightly smaller than regular text
+    */
+    font-size: 0.9rem;
+}
+
+/*
+-----------------------------------------------------------------------------
+LEGEND ITEM - Color Guide Entries
+-----------------------------------------------------------------------------
+Each legend item shows a colored circle and description
+-----------------------------------------------------------------------------
+*/
+.legend-item {
+    /*
+    DISPLAY: FLEX
+    Arrange circle and text horizontally
+    */
+    display: flex;
+    
+    /*
+    ALIGN-ITEMS: CENTER
+    Vertically center the circle and text
+    - flex-start: Align to top
+    - flex-end: Align to bottom
+    - center: Align to middle (what we use)
+    */
+    align-items: center;
+    
+    /*
+    MARGIN BOTTOM
+    Space between legend items
+    */
+    margin-bottom: 0.8rem;
+}
+
+/*
+-----------------------------------------------------------------------------
+COLORED CIRCLE - Legend Color Indicators
+-----------------------------------------------------------------------------
+The small colored circles in the legend
+These match the particle colors in the simulation
+-----------------------------------------------------------------------------
+*/
+.colored-circle {
+    /*
+    WIDTH & HEIGHT
+    Small circle
+    */
+    width: 16px;
+    height: 16px;
+    
+    /*
+    BORDER RADIUS
+    50% makes square into circle
+    */
+    border-radius: 50%;
+    
+    /*
+    MARGIN RIGHT
+    Space between circle and text
+    */
+    margin-right: 0.8rem;
+    
+    /*
+    BORDER
+    White outline around circle (makes it visible on any background)
+    */
+    border: 2px solid white;
+}
+
+/*
+-----------------------------------------------------------------------------
+COLORED CIRCLE VARIANTS - Specific Colors
+-----------------------------------------------------------------------------
+Different classes for different particle types
+These match the particle colors in particle.js
+-----------------------------------------------------------------------------
+*/
+
+/* Positive charge = RED */
+.colored-circle.positive {
+    background-color: rgb(255, 100, 100);
+}
+
+/* Negative charge = BLUE */
+.colored-circle.negative {
+    background-color: rgb(100, 100, 255);
+}
+
+/* Neutral = GREEN */
+.colored-circle.neutral {
+    background-color: rgb(100, 255, 100);
+}
+
+/*
+-----------------------------------------------------------------------------
+RESPONSIVE DESIGN - MOBILE / TABLET
+-----------------------------------------------------------------------------
+Media queries adjust styles based on screen size
+This makes the design work on phones and tablets
+
+@media (max-width: 768px) means "apply these styles when screen is 768px or smaller"
+768px is a common breakpoint for tablets in portrait mode
+-----------------------------------------------------------------------------
+*/
+@media (max-width: 768px) {
+    /*
+    On small screens, stack canvas and panel vertically instead of horizontally
+    */
+    .container {
+        /* 
+        FLEX-DIRECTION: COLUMN
+        Changes flex layout from horizontal (default: row) to vertical
+        Canvas will be on top, panel below
+        */
+        flex-direction: column;
+        
+        /*
+        HEIGHT: AUTO
+        Don't force a specific height, let content determine it
+        */
+        height: auto;
+    }
+    
+    /*
+    CANVAS SECTION HEIGHT
+    On mobile, give canvas a fixed height
+    Since it's stacked vertically, we need to specify how tall it should be
+    */
+    .canvas-section {
+        height: 400px;  /* Reasonable height for mobile screens */
+    }
+    
+    /*
+    CONTROL PANEL WIDTH
+    On mobile, let panel take full width
+    */
+    .control-panel {
+        max-width: 100%;  /* Remove width restriction */
+    }
+    
+    /*
+    HEADER PADDING
+    Less padding on mobile (more room for content)
+    */
+    header {
+        padding: 1rem;
+    }
+    
+    /*
+    H1 SIZE
+    Smaller title on mobile screens
+    */
+    h1 {
+        font-size: 2rem;  /* Reduced from 2.5rem */
+    }
+}
+
+/*
+=============================================================================
+CSS CONCEPTS SUMMARY
+=============================================================================
+
+1. SELECTORS
+   - Element: body, h1, button
+   - Class: .container, .control-panel
+   - ID: #myElement (not used much in this file)
+   - Pseudo-class: :hover, :last-child
+   - Combinator: header p (p inside header)
+
+2. BOX MODEL
+   Every element is a box with:
+   - Content: The actual content (text, images)
+   - Padding: Space inside border
+   - Border: Line around padding
+   - Margin: Space outside border
+
+3. COLORS
+   - Named: white, red, blue
+   - Hex: #ffffff (RRGGBB in hexadecimal)
+   - RGB: rgb(255, 255, 255)
+   - RGBA: rgba(255, 255, 255, 0.5) - includes transparency
+
+4. UNITS
+   - px: Pixels (absolute)
+   - rem: Relative to root font size
+   - %: Percentage of parent
+   - vh/vw: Viewport height/width percentage
+
+5. FLEXBOX
+   - display: flex: Enable flex layout
+   - flex-direction: row/column
+   - justify-content: Horizontal alignment
+   - align-items: Vertical alignment
+   - gap: Space between items
+
+6. GLASSMORPHISM
+   - Semi-transparent backgrounds (rgba with low alpha)
+   - backdrop-filter: blur() for frosted glass effect
+   - Subtle borders
+   - Modern, elegant appearance
+
+=============================================================================
+*/
