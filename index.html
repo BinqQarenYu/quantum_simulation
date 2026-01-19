@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Particle Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <canvas id="simulation-canvas"></canvas>
+        <div class="control-panel">
+            <h2>Quantum Particle Simulation</h2>
+            
+            <div class="stats-section">
+                <h3>Live Statistics</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Particle Count:</span>
+                    <span id="particle-count" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Energy:</span>
+                    <span id="total-energy" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Avg Velocity:</span>
+                    <span id="avg-velocity" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">FPS:</span>
+                    <span id="fps" class="stat-value">0</span>
+                </div>
+            </div>
+            
+            <div class="controls-section">
+                <h3>Controls</h3>
+                <button id="pause-btn" class="control-btn">Pause</button>
+                <button id="reset-btn" class="control-btn">Reset</button>
+                
+                <div class="slider-control">
+                    <label for="particle-slider">Particle Count: <span id="particle-value">50</span></label>
+                    <input type="range" id="particle-slider" min="5" max="100" value="50">
+                </div>
+                
+                <div class="slider-control">
+                    <label for="force-slider">Force Strength: <span id="force-value">1.0</span></label>
+                    <input type="range" id="force-slider" min="0.1" max="2.0" step="0.1" value="1.0">
+                </div>
+            </div>
+            
+            <div class="formulas-section">
+                <h3>Mathematical Formulas</h3>
+                <div class="formula-item">
+                    <strong>Coulomb's Law:</strong>
+                    <div class="formula">F = k × (q₁ × q₂) / r²</div>
+                </div>
+                <div class="formula-item">
+                    <strong>Newton's Second Law:</strong>
+                    <div class="formula">a = F / m</div>
+                </div>
+                <div class="formula-item">
+                    <strong>Velocity Update:</strong>
+                    <div class="formula">v = v₀ + a × Δt</div>
+                </div>
+                <div class="formula-item">
+                    <strong>Position Update:</strong>
+                    <div class="formula">x = x₀ + v × Δt</div>
+                </div>
+                <div class="formula-item">
+                    <strong>Kinetic Energy:</strong>
+                    <div class="formula">KE = ½ × m × v²</div>
+                </div>
+                <div class="formula-item">
+                    <strong>Potential Energy:</strong>
+                    <div class="formula">PE = k × (q₁ × q₂) / r</div>
+                </div>
+            </div>
+            
+            <div class="legend-section">
+                <h3>Particle Types</h3>
+                <div class="legend-item">
+                    <span class="legend-color positive"></span>
+                    <span>Positive Charge (Red)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color negative"></span>
+                    <span>Negative Charge (Blue)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color neutral"></span>
+                    <span>Neutral (Green)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="particle.js"></script>
+    <script src="physics.js"></script>
+    <script src="simulation.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
