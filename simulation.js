@@ -96,7 +96,7 @@ class Simulation {
         if (this.isPaused) return;
         
         // Limit delta time to prevent instability
-        const dt = Math.min(deltaTime, 0.033); // Cap at ~30 FPS equivalent
+        const dt = Math.min(deltaTime, 1/60); // Cap at 60 FPS equivalent (~0.0167s)
         
         // Apply forces
         this.physics.applyForces(this.particles, this.forceMultiplier);

@@ -58,8 +58,7 @@ class PhysicsEngine {
                 const p1 = particles[i];
                 const p2 = particles[j];
                 
-                // Skip neutral particles
-                if (p1.charge === 0 && p2.charge === 0) continue;
+                // Skip if either particle is neutral
                 if (p1.charge === 0 || p2.charge === 0) continue;
                 
                 const { fx, fy } = this.calculateCoulombForce(p1, p2);
