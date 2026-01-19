@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Particle Simulation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .simulation-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .canvas-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            background: #000;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button {
+            background: rgba(0, 200, 255, 0.8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: rgba(0, 200, 255, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        input[type="range"] {
+            width: 120px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .math-panel {
+            width: 350px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .math-panel h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 2px solid rgba(0, 200, 255, 0.5);
+            padding-bottom: 10px;
+        }
+
+        .formula-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 3px solid rgba(0, 200, 255, 0.8);
+        }
+
+        .formula-section h3 {
+            font-size: 16px;
+            color: #00c8ff;
+            margin-bottom: 10px;
+        }
+
+        .formula {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .variable {
+            color: #ffcc00;
+        }
+
+        .value {
+            color: #00ff88;
+        }
+
+        .description {
+            font-size: 13px;
+            color: #ddd;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .stats {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stats-item:last-child {
+            border-bottom: none;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+
+        .positive {
+            background: #ff4444;
+        }
+
+        .negative {
+            background: #4444ff;
+        }
+
+        .neutral {
+            background: #44ff44;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="simulation-panel">
+            <div class="canvas-container">
+                <canvas id="simulationCanvas" width="800" height="600"></canvas>
+            </div>
+            <div class="controls">
+                <button id="pauseBtn">Pause</button>
+                <button id="resetBtn">Reset</button>
+                <div class="control-group">
+                    <label for="particleCount">Particles:</label>
+                    <input type="range" id="particleCount" min="5" max="100" value="20">
+                    <span id="particleCountValue">20</span>
+                </div>
+                <div class="control-group">
+                    <label for="forceStrength">Force:</label>
+                    <input type="range" id="forceStrength" min="1" max="100" value="50">
+                    <span id="forceStrengthValue">50</span>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color positive"></div>
+                        <span>Positive Charge</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color negative"></div>
+                        <span>Negative Charge</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color neutral"></div>
+                        <span>Neutral</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="math-panel">
+            <h2>Mathematical Formulas</h2>
+            
+            <div class="formula-section">
+                <h3>Coulomb's Law (Electrostatic Force)</h3>
+                <div class="formula">
+                    F = k × (q₁ × q₂) / r²
+                </div>
+                <div class="description">
+                    <span class="variable">k</span> = Coulomb's constant (8.99×10⁹ N⋅m²/C²)<br>
+                    <span class="variable">q₁, q₂</span> = charges of particles<br>
+                    <span class="variable">r</span> = distance between particles
+                </div>
+            </div>
+
+            <div class="formula-section">
+                <h3>Newton's Second Law</h3>
+                <div class="formula">
+                    F = m × a
+                </div>
+                <div class="description">
+                    <span class="variable">F</span> = force vector<br>
+                    <span class="variable">m</span> = mass of particle<br>
+                    <span class="variable">a</span> = acceleration
+                </div>
+            </div>
+
+            <div class="formula-section">
+                <h3>Velocity Update</h3>
+                <div class="formula">
+                    v = v₀ + a × Δt
+                </div>
+                <div class="description">
+                    <span class="variable">v</span> = new velocity<br>
+                    <span class="variable">v₀</span> = initial velocity<br>
+                    <span class="variable">Δt</span> = time step
+                </div>
+            </div>
+
+            <div class="formula-section">
+                <h3>Position Update</h3>
+                <div class="formula">
+                    x = x₀ + v × Δt
+                </div>
+                <div class="description">
+                    <span class="variable">x</span> = new position<br>
+                    <span class="variable">x₀</span> = initial position<br>
+                    <span class="variable">v</span> = velocity
+                </div>
+            </div>
+
+            <div class="formula-section">
+                <h3>Kinetic Energy</h3>
+                <div class="formula">
+                    KE = ½ × m × v²
+                </div>
+                <div class="description">
+                    <span class="variable">KE</span> = kinetic energy<br>
+                    <span class="variable">m</span> = mass<br>
+                    <span class="variable">v</span> = velocity magnitude
+                </div>
+            </div>
+
+            <div class="formula-section">
+                <h3>Potential Energy</h3>
+                <div class="formula">
+                    PE = k × (q₁ × q₂) / r
+                </div>
+                <div class="description">
+                    <span class="variable">PE</span> = potential energy between two charges
+                </div>
+            </div>
+
+            <div class="stats">
+                <h3 style="margin-bottom: 10px; font-size: 16px;">Live Statistics</h3>
+                <div class="stats-item">
+                    <span>Total Particles:</span>
+                    <span class="value" id="totalParticles">0</span>
+                </div>
+                <div class="stats-item">
+                    <span>Total Energy:</span>
+                    <span class="value" id="totalEnergy">0</span>
+                </div>
+                <div class="stats-item">
+                    <span>Avg Velocity:</span>
+                    <span class="value" id="avgVelocity">0</span>
+                </div>
+                <div class="stats-item">
+                    <span>Frame Rate:</span>
+                    <span class="value" id="frameRate">0 FPS</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('simulationCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Constants
+        const COULOMB_CONSTANT = 0.5; // Scaled for visualization
+        const DAMPING = 0.99; // Energy dissipation
+        const MIN_DISTANCE = 10; // Prevent infinite forces
+        const TIME_STEP = 0.1;
+        
+        // Simulation state
+        let particles = [];
+        let isPaused = false;
+        let forceMultiplier = 1.0;
+        let lastFrameTime = performance.now();
+        let frameCount = 0;
+        let fps = 0;
+        
+        // Particle class
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.ax = 0;
+                this.ay = 0;
+                this.mass = 1.0;
+                this.charge = Math.random() > 0.5 ? 1 : -1;
+                this.radius = 5;
+                
+                // Color based on charge
+                if (this.charge > 0) {
+                    this.color = '#ff4444'; // Red for positive
+                } else if (this.charge < 0) {
+                    this.color = '#4444ff'; // Blue for negative
+                } else {
+                    this.color = '#44ff44'; // Green for neutral
+                }
+            }
+            
+            update() {
+                // Update velocity with acceleration (Newton's 2nd law: F = ma)
+                this.vx += this.ax * TIME_STEP;
+                this.vy += this.ay * TIME_STEP;
+                
+                // Apply damping
+                this.vx *= DAMPING;
+                this.vy *= DAMPING;
+                
+                // Update position
+                this.x += this.vx * TIME_STEP;
+                this.y += this.vy * TIME_STEP;
+                
+                // Boundary conditions (elastic collision)
+                if (this.x < this.radius || this.x > canvas.width - this.radius) {
+                    this.vx *= -1;
+                    this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
+                }
+                if (this.y < this.radius || this.y > canvas.height - this.radius) {
+                    this.vy *= -1;
+                    this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
+                }
+                
+                // Reset acceleration
+                this.ax = 0;
+                this.ay = 0;
+            }
+            
+            applyForce(fx, fy) {
+                // F = ma, so a = F/m
+                this.ax += fx / this.mass;
+                this.ay += fy / this.mass;
+            }
+            
+            draw() {
+                // Draw particle
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                
+                // Draw glow effect
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, this.radius * 2
+                );
+                gradient.addColorStop(0, this.color + '80');
+                gradient.addColorStop(1, this.color + '00');
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Draw velocity vector
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x + this.vx * 2, this.y + this.vy * 2);
+                ctx.strokeStyle = this.color + '80';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            getKineticEnergy() {
+                const v2 = this.vx * this.vx + this.vy * this.vy;
+                return 0.5 * this.mass * v2;
+            }
+            
+            getVelocity() {
+                return Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+            }
+        }
+        
+        // Calculate Coulomb force between two particles
+        function calculateCoulombForce(p1, p2) {
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const distSq = dx * dx + dy * dy;
+            const dist = Math.sqrt(distSq);
+            
+            // Prevent division by zero and infinite forces
+            if (dist < MIN_DISTANCE) return { fx: 0, fy: 0 };
+            
+            // Coulomb's Law: F = k * (q1 * q2) / r^2
+            const forceMag = (COULOMB_CONSTANT * p1.charge * p2.charge * forceMultiplier) / distSq;
+            
+            // Normalize direction and apply magnitude
+            const fx = (dx / dist) * forceMag;
+            const fy = (dy / dist) * forceMag;
+            
+            return { fx, fy };
+        }
+        
+        // Initialize particles
+        function initParticles(count) {
+            particles = [];
+            for (let i = 0; i < count; i++) {
+                const x = Math.random() * (canvas.width - 20) + 10;
+                const y = Math.random() * (canvas.height - 20) + 10;
+                particles.push(new Particle(x, y));
+            }
+        }
+        
+        // Update physics
+        function updatePhysics() {
+            // Calculate forces between all particle pairs
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const { fx, fy } = calculateCoulombForce(particles[i], particles[j]);
+                    
+                    // Apply equal and opposite forces (Newton's 3rd law)
+                    particles[i].applyForce(fx, fy);
+                    particles[j].applyForce(-fx, -fy);
+                }
+            }
+            
+            // Update all particles
+            particles.forEach(p => p.update());
+        }
+        
+        // Draw everything
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw field lines between charged particles
+            ctx.globalAlpha = 0.1;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p1 = particles[i];
+                    const p2 = particles[j];
+                    
+                    // Draw line with color based on interaction
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    
+                    if (p1.charge * p2.charge > 0) {
+                        ctx.strokeStyle = '#ff0000'; // Repulsion
+                    } else {
+                        ctx.strokeStyle = '#00ff00'; // Attraction
+                    }
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+            ctx.globalAlpha = 1.0;
+            
+            // Draw particles
+            particles.forEach(p => p.draw());
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const totalEnergy = particles.reduce((sum, p) => sum + p.getKineticEnergy(), 0);
+            const avgVelocity = particles.reduce((sum, p) => sum + p.getVelocity(), 0) / particles.length;
+            
+            document.getElementById('totalParticles').textContent = particles.length;
+            document.getElementById('totalEnergy').textContent = totalEnergy.toFixed(2);
+            document.getElementById('avgVelocity').textContent = avgVelocity.toFixed(2);
+            document.getElementById('frameRate').textContent = fps + ' FPS';
+        }
+        
+        // Animation loop
+        function animate() {
+            if (!isPaused) {
+                updatePhysics();
+                draw();
+                updateStats();
+            }
+            
+            // Calculate FPS
+            frameCount++;
+            const currentTime = performance.now();
+            if (currentTime - lastFrameTime >= 1000) {
+                fps = frameCount;
+                frameCount = 0;
+                lastFrameTime = currentTime;
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Event listeners
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            isPaused = !isPaused;
+            document.getElementById('pauseBtn').textContent = isPaused ? 'Resume' : 'Pause';
+        });
+        
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            const count = parseInt(document.getElementById('particleCount').value);
+            initParticles(count);
+        });
+        
+        document.getElementById('particleCount').addEventListener('input', (e) => {
+            const value = e.target.value;
+            document.getElementById('particleCountValue').textContent = value;
+        });
+        
+        document.getElementById('forceStrength').addEventListener('input', (e) => {
+            const value = e.target.value;
+            document.getElementById('forceStrengthValue').textContent = value;
+            forceMultiplier = value / 50; // Scale to 0-2 range
+        });
+        
+        // Initialize and start
+        initParticles(20);
+        animate();
+    </script>
+</body>
+</html>
