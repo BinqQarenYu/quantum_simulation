@@ -428,7 +428,7 @@ class Simulation {
                 // Draw the line
                 // -----------------------------------------------------------------
                 // Start drawing a new path
-                ctx.beginPath();
+                this.ctx.beginPath();
                 
                 // Set line color with calculated opacity
                 // rgba(r, g, b, alpha) where alpha is transparency (0 = invisible, 1 = opaque)
