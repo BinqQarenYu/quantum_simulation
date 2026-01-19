@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<!--
+=============================================================================
+QUANTUM PARTICLE SIMULATION - HTML STRUCTURE
+=============================================================================
+This HTML file defines the structure and layout of our quantum particle simulation.
+
+HTML (HyperText Markup Language) is like the skeleton of a webpage:
+- It defines what elements exist (canvas, buttons, text, etc.)
+- It provides structure (header, main content, panels)
+- It's separate from style (CSS) and behavior (JavaScript)
+
+Think of building a house:
+- HTML = the frame and walls (structure)
+- CSS = the paint and decorations (style)
+- JavaScript = the plumbing and electricity (functionality)
+=============================================================================
+-->
+
+<html lang="en">
+<!--
+The <html> tag wraps the entire document
+lang="en" tells browsers and screen readers this page is in English
+This helps with accessibility and search engine optimization
+-->
+
+<head>
+    <!--
+    ==========================================================================
+    HEAD SECTION - Metadata and Resources
+    ==========================================================================
+    The <head> contains information ABOUT the page, not content to display.
+    It includes:
+    - Character encoding (how to interpret text)
+    - Viewport settings (for responsive design)
+    - Title (shown in browser tab)
+    - Linked resources (CSS files, JavaScript files)
+    ==========================================================================
+    -->
+    
+    <!-- CHARACTER ENCODING: UTF-8 supports all languages and symbols -->
+    <meta charset="UTF-8">
+    
+    <!-- 
+    VIEWPORT META TAG: Essential for responsive design
+    - width=device-width: Make the page width match the device screen width
+    - initial-scale=1.0: Don't zoom in or out by default
+    Without this, mobile devices would show a tiny version of the desktop site
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 
+    TITLE: What appears in the browser tab
+    This is also used by search engines and when bookmarking
+    -->
+    <title>Quantum Particle Simulation</title>
+    
+    <!-- 
+    LINK TO CSS STYLESHEET
+    This connects our HTML to our CSS file (styles.css)
+    rel="stylesheet" tells the browser this is a CSS file
+    href="styles.css" is the path to the file
+    -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!--
+    ==========================================================================
+    BODY SECTION - Visible Content
+    ==========================================================================
+    Everything inside <body> is what the user sees and interacts with.
+    Our page has three main sections:
+    1. Header with title and description
+    2. Main canvas where particles are drawn
+    3. Control panel with buttons, sliders, and statistics
+    ==========================================================================
+    -->
+    
+    <!--
+    ==========================================================================
+    HEADER SECTION
+    ==========================================================================
+    Semantic HTML: <header> clearly indicates this is a header section
+    Semantic tags (<header>, <main>, <section>) are better than generic <div>
+    because they:
+    - Make code more readable
+    - Help screen readers (accessibility)
+    - Improve SEO (search engines understand page structure)
+    ==========================================================================
+    -->
+    <header>
+        <!-- Main heading - <h1> is the most important heading -->
+        <h1>Quantum Particle Simulation</h1>
+        
+        <!-- Subheading - <p> is a paragraph -->
+        <p>Electromagnetic interactions visualized with Coulomb's Law</p>
+    </header>
+    
+    <!--
+    ==========================================================================
+    MAIN CONTAINER
+    ==========================================================================
+    <main> indicates the primary content of the page
+    This is a semantic tag (like <header>) that helps with accessibility
+    
+    The container holds our two main areas side-by-side:
+    - Canvas (where animation happens)
+    - Control Panel (buttons and info)
+    ==========================================================================
+    -->
+    <main class="container">
+        <!--
+        ======================================================================
+        CANVAS SECTION - Where Particles Are Drawn
+        ======================================================================
+        The <canvas> element is special in HTML
+        It's like a blank picture frame that JavaScript can draw on
+        
+        Think of canvas as:
+        - A digital whiteboard
+        - A pixel grid we can paint on
+        - An animation surface
+        
+        Unlike normal HTML elements (text, images), canvas content is drawn
+        programmatically using JavaScript. We can't see anything in the HTML
+        itself - it's all created at runtime!
+        ======================================================================
+        -->
+        <section class="canvas-section">
+            <!--
+            CANVAS ELEMENT
+            - id="simulationCanvas": Unique identifier for JavaScript to find it
+            - width/height will be set by JavaScript to match container size
+            - JavaScript gets a "context" from canvas to draw with
+            -->
+            <canvas id="simulationCanvas"></canvas>
+        </section>
+        
+        <!--
+        ======================================================================
+        CONTROL PANEL SECTION - User Interface
+        ======================================================================
+        This panel contains all the interactive controls and information displays
+        It's divided into subsections for organization:
+        - Controls (buttons and sliders)
+        - Statistics (live data)
+        - Formulas (physics equations)
+        - Legend (particle color meanings)
+        ======================================================================
+        -->
+        <section class="control-panel">
+            <!--
+            ==================================================================
+            CONTROLS SUBSECTION - Interactive Elements
+            ==================================================================
+            This is where users can interact with the simulation
+            Buttons to control playback, sliders to adjust parameters
+            ==================================================================
+            -->
+            <div class="panel-section">
+                <!-- Section heading -->
+                <h2>Controls</h2>
+                
+                <!--
+                BUTTON GROUP - Pause and Reset buttons
+                We wrap them in a div for styling (to arrange them side by side)
+                -->
+                <div class="button-group">
+                    <!--
+                    PAUSE/RESUME BUTTON
+                    - id="pauseBtn": JavaScript finds this to add click listener
+                    - textContent will change between "Pause" and "Resume"
+                    - The button is a self-contained control element
+                    -->
+                    <button id="pauseBtn">Pause</button>
+                    
+                    <!--
+                    RESET BUTTON
+                    - Clicking this regenerates all particles
+                    - Gives users a quick way to try new configurations
+                    -->
+                    <button id="resetBtn">Reset</button>
+                </div>
+                
+                <!--
+                SLIDER CONTROL - Particle Count
+                HTML forms have various input types:
+                - type="text": Text box
+                - type="checkbox": Check box
+                - type="range": Slider (what we're using here)
+                
+                A slider (range input) is perfect for adjusting numeric values
+                within a specific range
+                -->
+                <div class="control-group">
+                    <!-- Label describes what the slider controls -->
+                    <label for="particleCount">Particle Count:</label>
+                    
+                    <!-- 
+                    RANGE INPUT (Slider)
+                    - type="range": Creates a slider control
+                    - id="particleCount": Unique identifier for JavaScript
+                    - min="5": Minimum value (left end of slider)
+                    - max="100": Maximum value (right end of slider)
+                    - value="30": Starting value (initial position)
+                    - JavaScript listens for "input" events to detect changes
+                    -->
+                    <input type="range" id="particleCount" min="5" max="100" value="30">
+                    
+                    <!--
+                    VALUE DISPLAY
+                    Shows the current slider value as text
+                    - <span> is an inline container (doesn't create new line)
+                    - JavaScript updates the textContent as slider moves
+                    -->
+                    <span id="particleCountValue">30</span>
+                </div>
+                
+                <!--
+                SLIDER CONTROL - Force Strength
+                Same pattern as particle count slider
+                This adjusts how strong the electromagnetic forces are
+                -->
+                <div class="control-group">
+                    <label for="forceStrength">Force Strength:</label>
+                    
+                    <!--
+                    FORCE STRENGTH SLIDER
+                    - min="1000": Weak forces (gentle interactions)
+                    - max="10000": Strong forces (dramatic interactions)
+                    - value="5000": Medium strength (default)
+                    - step="500": Slider moves in increments of 500
+                    -->
+                    <input type="range" id="forceStrength" min="1000" max="10000" value="5000" step="500">
+                    
+                    <span id="forceStrengthValue">5000</span>
+                </div>
+                
+                <!--
+                CHECKBOX CONTROL - Field Lines Toggle
+                Checkboxes are used for on/off options
+                They're perfect for enabling/disabling features
+                -->
+                <div class="control-group">
+                    <!--
+                    CHECKBOX INPUT
+                    - type="checkbox": Creates a checkbox
+                    - id="fieldLinesToggle": For JavaScript to find it
+                    - checked: Starts in checked state (field lines on by default)
+                    -->
+                    <input type="checkbox" id="fieldLinesToggle" checked>
+                    
+                    <!--
+                    LABEL WITH "for" ATTRIBUTE
+                    - for="fieldLinesToggle": Associates label with the checkbox
+                    - Clicking the label also toggles the checkbox (better UX)
+                    - Screen readers read the label when focused on checkbox
+                    -->
+                    <label for="fieldLinesToggle">Show Field Lines</label>
+                </div>
+                
+                <!--
+                CHECKBOX CONTROL - Velocity Vectors Toggle
+                Same pattern as field lines checkbox
+                Controls whether velocity arrows are shown on particles
+                -->
+                <div class="control-group">
+                    <input type="checkbox" id="velocityToggle" checked>
+                    <label for="velocityToggle">Show Velocity Vectors</label>
+                </div>
+            </div>
+            
+            <!--
+            ==================================================================
+            STATISTICS SUBSECTION - Live Data Display
+            ==================================================================
+            This section shows real-time information about the simulation
+            JavaScript updates these values 10 times per second
+            ==================================================================
+            -->
+            <div class="panel-section">
+                <h2>Statistics</h2>
+                
+                <!--
+                STATISTIC ROWS
+                Each row shows a label and a dynamic value
+                The structure is: "Label: <value>"
+                -->
+                <div class="stat-row">
+                    <span>Particles:</span>
+                    <!--
+                    VALUE SPAN
+                    - id="particleCountDisplay": JavaScript finds this to update it
+                    - Initial content is "30", will change as particles are added/removed
+                    -->
+                    <span id="particleCountDisplay">30</span>
+                </div>
+                
+                <div class="stat-row">
+                    <span>Total Energy:</span>
+                    <!--
+                    Energy value
+                    - Shows kinetic + potential energy
+                    - Format: number with 2 decimal places
+                    -->
+                    <span id="totalEnergyDisplay">0.00</span>
+                </div>
+                
+                <div class="stat-row">
+                    <span>Avg. Velocity:</span>
+                    <!--
+                    Average velocity
+                    - Mean speed of all particles
+                    - Format: number with 2 decimal places
+                    -->
+                    <span id="avgVelocityDisplay">0.00</span>
+                </div>
+                
+                <div class="stat-row">
+                    <span>FPS:</span>
+                    <!--
+                    FPS (Frames Per Second)
+                    - Shows how smoothly animation is running
+                    - 60 FPS = ideal, <30 FPS = choppy
+                    -->
+                    <span id="fpsDisplay">60</span>
+                </div>
+            </div>
+            
+            <!--
+            ==================================================================
+            FORMULAS SUBSECTION - Physics Equations Display
+            ==================================================================
+            This section displays the mathematical formulas used in the simulation
+            It's educational - helps users understand the physics
+            
+            We use Unicode characters for mathematical symbols:
+            - × (multiplication): &times; or \u00D7
+            - ² (squared): &sup2; or \u00B2
+            - ₁ ₂ (subscripts): &#8321; &#8322;
+            ==================================================================
+            -->
+            <div class="panel-section">
+                <h2>Formulas</h2>
+                
+                <!--
+                FORMULA DISPLAY
+                Each formula is shown in a separate div
+                We use <code> tags to indicate this is code/formula (monospace font)
+                -->
+                <div class="formula">
+                    <!--
+                    COULOMB'S LAW
+                    F = k × (q₁ × q₂) / r²
+                    This is the fundamental equation for electromagnetic forces
+                    -->
+                    <strong>Coulomb's Law:</strong><br>
+                    <code>F = k × (q₁ × q₂) / r²</code>
+                </div>
+                
+                <div class="formula">
+                    <!--
+                    NEWTON'S SECOND LAW
+                    F = ma (Force = mass × acceleration)
+                    Rearranged: a = F/m (acceleration = force / mass)
+                    -->
+                    <strong>Newton's 2nd Law:</strong><br>
+                    <code>a = F / m</code>
+                </div>
+                
+                <div class="formula">
+                    <!--
+                    KINEMATIC EQUATIONS
+                    These describe motion with constant acceleration
+                    -->
+                    <strong>Kinematics:</strong><br>
+                    <code>v = v₀ + a×t</code><br>
+                    <code>x = x₀ + v×t</code>
+                </div>
+                
+                <div class="formula">
+                    <!--
+                    KINETIC ENERGY
+                    KE = ½mv² (energy of motion)
+                    -->
+                    <strong>Kinetic Energy:</strong><br>
+                    <code>KE = ½mv²</code>
+                </div>
+                
+                <div class="formula">
+                    <!--
+                    POTENTIAL ENERGY
+                    PE = k(q₁q₂)/r (stored electromagnetic energy)
+                    -->
+                    <strong>Potential Energy:</strong><br>
+                    <code>PE = k(q₁q₂)/r</code>
+                </div>
+            </div>
+            
+            <!--
+            ==================================================================
+            LEGEND SUBSECTION - Particle Color Meanings
+            ==================================================================
+            This helps users understand what the particle colors mean
+            Visual guide showing charge types and their colors
+            ==================================================================
+            -->
+            <div class="panel-section">
+                <h2>Legend</h2>
+                
+                <!--
+                LEGEND ITEMS
+                Each item shows a colored circle and description
+                The colored-circle class in CSS creates the visual indicator
+                -->
+                <div class="legend-item">
+                    <!--
+                    RED CIRCLE = Positive Charge
+                    - class="colored-circle positive": CSS styles this as red
+                    - Represents particles with charge = +1
+                    -->
+                    <div class="colored-circle positive"></div>
+                    <span>Positive Charge (+1)</span>
+                </div>
+                
+                <div class="legend-item">
+                    <!--
+                    BLUE CIRCLE = Negative Charge
+                    - class="colored-circle negative": CSS styles this as blue
+                    - Represents particles with charge = -1
+                    -->
+                    <div class="colored-circle negative"></div>
+                    <span>Negative Charge (-1)</span>
+                </div>
+                
+                <div class="legend-item">
+                    <!--
+                    GREEN CIRCLE = Neutral Charge
+                    - class="colored-circle neutral": CSS styles this as green
+                    - Represents particles with charge = 0
+                    -->
+                    <div class="colored-circle neutral"></div>
+                    <span>Neutral (0)</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!--
+    ==========================================================================
+    JAVASCRIPT INCLUDES
+    ==========================================================================
+    These <script> tags load our JavaScript files
+    
+    IMPORTANT: Order matters!
+    - particle.js must load first (defines Particle class)
+    - physics.js must load second (defines PhysicsEngine, uses Particle)
+    - simulation.js must load third (defines Simulation, uses Particle and PhysicsEngine)
+    - main.js must load last (creates App, uses Simulation)
+    
+    Think of it like building blocks:
+    - Bottom layer: Particle (basic building block)
+    - Middle layer: PhysicsEngine and Simulation (use Particle)
+    - Top layer: App (uses everything)
+    
+    We put scripts at the end of <body> so:
+    - HTML loads first (user sees content immediately)
+    - JavaScript loads after (progressive enhancement)
+    - DOM is ready when scripts run (no need to wait for DOMContentLoaded in some cases)
+    ==========================================================================
+    -->
+    
+    <!-- Load Particle class -->
+    <script src="particle.js"></script>
+    
+    <!-- Load PhysicsEngine class -->
+    <script src="physics.js"></script>
+    
+    <!-- Load Simulation class -->
+    <script src="simulation.js"></script>
+    
+    <!-- Load App class and start the application -->
+    <script src="main.js"></script>
+</body>
+</html>
+
+<!--
+==============================================================================
+KEY HTML CONCEPTS EXPLAINED
+==============================================================================
+
+1. SEMANTIC HTML
+   Using meaningful tags like <header>, <main>, <section> instead of just <div>
+   Benefits: Better accessibility, SEO, and code readability
+
+2. IDs vs CLASSES
+   - id="myElement": Unique identifier (only one per page)
+   - class="myClass": Reusable style/behavior (multiple elements can share)
+   - JavaScript often uses IDs to find specific elements
+   - CSS often uses classes to style groups of elements
+
+3. ATTRIBUTES
+   Tags can have attributes that provide additional information:
+   - id: unique identifier
+   - class: style categories
+   - type: input type (text, range, checkbox, etc.)
+   - min/max: range limits for sliders
+   - checked: default checkbox state
+   - for: associates label with input
+
+4. NESTING
+   HTML elements nest inside each other like Russian dolls:
+   <html>
+     <body>
+       <main>
+         <section>
+           <div>
+             Content here
+           </div>
+         </section>
+       </main>
+     </body>
+   </html>
+   
+   Proper nesting is crucial for valid HTML
+
+5. THE CANVAS ELEMENT
+   Special element for programmatic drawing
+   - JavaScript gets a "context" to draw on it
+   - Unlike other elements, content is not in HTML
+   - Perfect for animations, games, visualizations
+
+6. FORM CONTROLS
+   Interactive elements users can manipulate:
+   - <button>: Clickable button
+   - <input type="range">: Slider
+   - <input type="checkbox">: Checkbox
+   - <label>: Describes an input (improves UX and accessibility)
+
+7. ACCESSIBILITY
+   Making the web usable for everyone:
+   - Semantic tags help screen readers
+   - Labels associate with inputs
+   - Alt text describes images (not used here but important)
+   - lang attribute helps with language detection
+
+==============================================================================
+-->
