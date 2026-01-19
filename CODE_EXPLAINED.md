@@ -1,43 +1,51 @@
-# Code Explained
+# CODE_EXPLAINED.md
 
-This document provides detailed explanations of the code files and functions in the `quantum_simulation` repository. We aim to make it beginner-friendly, ensuring that anyone new to quantum simulation development can understand the purpose and functionality of each part of the code.
+## 1. index.html Structure
+The `index.html` file serves as the entry point of the application. It provides the structure of the webpage by including necessary elements such as `head`, `body`, and links to styles and scripts. 
 
-## File: example_file.py
+- **HTML Structure**: The basic structure includes `<!DOCTYPE html>`, followed by `<html>`, `<head>`, and `<body>` tags.
+- **Why It's Important**: This structure is essential for browsers to interpret the content correctly and display it to the user.
 
-### Function: example_function()
+## 2. particle.js
+This file contains the `Particle` class, which models individual particles in the simulation.
 
-**Purpose:** This function serves as a demonstration of how to structure a basic quantum simulation. It initializes certain parameters and runs a simple algorithm.
+- **Constructor**: `constructor(x, y)` - Initializes a particle at position (x, y).
+- **Methods**:  
+  - `update()`: Updates the particle's position based on velocity. 
+  - `display()`: Draws the particle on the canvas. 
+  - **Analogy**: Imagine each particle as a tiny ball rolling on a surface, moving faster or slower depending on its speed.
 
-**Parameters:**
-- `param1` (Type): Description of param1.
-- `param2` (Type): Description of param2.
+## 3. physics.js
+The `physics.js` file defines the `PhysicsEngine` class that governs the physics of particles.
 
-**Returns:** This function returns the result of the simulation as a floating-point number.
+- **Methods**: 
+  - `applyForce(particle, force)`: Applies a force to a given particle, changing its velocity.
+  - `updateParticles()`: Loops through all particles and updates their properties.
+  - **Tip for Beginners**: Think of forces like pushing or pulling a friend on a swing; it changes how fast they go!
 
-### Example Usage:
-```python
-result = example_function(5, 10)
-print(result)
-```
+## 4. simulation.js
+This file is responsible for the overall simulation logic with the `Simulation` class.
 
-## File: another_file.py
+- **Methods**: 
+  - `start()`: Begins the simulation loop, updating and rendering particles.
+  - `reset()`: Resets the state of the simulation to start fresh.
+  - **What Each Parameter Means**: Each method will have parameters that define the state or configuration of the simulation, similar to setting controls on a video game.
 
-### Class: QuantumSimulator
+## 5. main.js
+The `main.js` file contains the `App` class that ties everything together.
 
-**Description:** This class implements the core functionalities of a quantum simulator, including state initialization, gate application, and measurement.
+- **Constructor**: `constructor()` - Initializes the app and all components.
+- **Methods**:  
+  - `run()`: Starts the application and manages the rendering loop.
+  - **Why Code is Written This Way**: Using classes allows for organizing code better, making it easier to manage similar functionalities.
 
-#### Method: apply_gate(gate_name, target_qubit)
-**Purpose:** Applies a specified quantum gate to the target qubit.
-- **Input:**
-  - `gate_name` (str): The name of the quantum gate to apply, e.g., 'X', 'H'.
-  - `target_qubit` (int): The index of the qubit to which the gate will be applied.
-- **Output:** None.
+## 6. styles.css
+The `styles.css` file contains styles that dictate how elements appear on the webpage.
 
-### Example Usage:
-```python
-simulator = QuantumSimulator()
-simulator.apply_gate('H', 0)
-```
+- **Key Concepts**:  
+  - Selectors: Target specific HTML elements to apply styles.  
+  - Properties: Define what styles to change, like color, font-size, and spacing.
+  - **Analogy**: Think of CSS as outfits for your webpage; it dresses up the HTML to make it look nice!
 
 ## Conclusion
-This README serves as a starting point for understanding the functionalities in the `quantum_simulation`. We encourage contributors to expand this document by providing explanations for new files and functions as they are added to the project.
+This file provides a beginner-friendly overview of the main files in the quantum simulation project. Each section aims to break down complex concepts into digestible explanations, making it simpler for new coders to understand the functionalities and design of the code.
