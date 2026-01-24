@@ -7,9 +7,11 @@ class App {
 
     initialize() {
         // Get DOM elements
-        const canvas = document.getElementById('simulationCanvas');
+        const container = document.getElementById('simulationCanvas');
         this.pauseBtn = document.getElementById('pauseBtn');
         this.resetBtn = document.getElementById('resetBtn');
+        this.elementSelector = document.getElementById('elementSelector');
+        this.elementName = document.getElementById('elementName');
         this.particleSlider = document.getElementById('particleSlider');
         this.particleSliderValue = document.getElementById('particleSliderValue');
         this.forceSlider = document.getElementById('forceSlider');
@@ -25,8 +27,8 @@ class App {
         this.avgVelocityEl = document.getElementById('avgVelocity');
         this.fpsEl = document.getElementById('fps');
         
-        // Create simulation
-        this.simulation = new Simulation(canvas);
+        // Create 3D simulation
+        this.simulation = new Simulation3D(container);
         
         // Setup event listeners
         this.setupEventListeners();
@@ -39,6 +41,20 @@ class App {
     }
 
     setupEventListeners() {
+        // Element selector
+        this.elementSelector.addEventListener('change', (e) => {
+            const atomicNumber = parseInt(e.target.value);
+            const elementNames = {
+                1: 'Hydrogen', 2: 'Helium', 3: 'Lithium',
+                6: 'Carbon', 7: 'Nitrogen', 8: 'Oxygen',
+                10: 'Neon', 11: 'Sodium', 18: 'Argon',
+                26: 'Iron', 29: 'Copper', 47: 'Silver',
+                79: 'Gold', 92: 'Uranium'
+            };
+            this.elementName.textContent = elementNames[atomicNumber];
+            this.simulation.setElement(atomicNumber);
+        });
+        
         // Pause/Resume button
         this.pauseBtn.addEventListener('click', () => {
             this.isPaused = !this.isPaused;

@@ -3,43 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Particle Simulation</title>
+    <title>Quantum Particle Simulation - 3D</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Quantum Particle Simulation</h1>
+        <h1>Quantum Particle Simulation - 3D Atomic Orbitals</h1>
         <div class="main-content">
             <div class="canvas-container">
-                <canvas id="simulationCanvas"></canvas>
+                <div id="simulationCanvas"></div>
+                <div class="controls-hint">🖱️ Click and drag to rotate | Scroll to zoom</div>
             </div>
             <div class="control-panel">
                 <div class="panel-section">
-                    <h2>Physics Formulas</h2>
+                    <h2>Quantum Physics</h2>
                     <div class="formula-list">
+                        <div class="formula">
+                            <strong>Schrödinger Equation:</strong><br>
+                            Ĥψ = Eψ
+                        </div>
+                        <div class="formula">
+                            <strong>Quantum Numbers:</strong><br>
+                            n (principal), l (angular), m (magnetic)
+                        </div>
+                        <div class="formula">
+                            <strong>Orbitals:</strong><br>
+                            s (l=0), p (l=1), d (l=2), f (l=3)
+                        </div>
+                        <div class="formula">
+                            <strong>Electron Config:</strong><br>
+                            1s² 2s² 2p⁶ 3s² 3p⁶ ...
+                        </div>
+                        <div class="formula">
+                            <strong>Pauli Exclusion:</strong><br>
+                            Max 2 electrons per orbital
+                        </div>
                         <div class="formula">
                             <strong>Coulomb's Law:</strong><br>
                             F = k × (q₁ × q₂) / r²
-                        </div>
-                        <div class="formula">
-                            <strong>Newton's 2nd Law:</strong><br>
-                            F = ma → a = F / m
-                        </div>
-                        <div class="formula">
-                            <strong>Velocity Update:</strong><br>
-                            v = v₀ + at
-                        </div>
-                        <div class="formula">
-                            <strong>Position Update:</strong><br>
-                            x = x₀ + vt
-                        </div>
-                        <div class="formula">
-                            <strong>Kinetic Energy:</strong><br>
-                            KE = ½mv²
-                        </div>
-                        <div class="formula">
-                            <strong>Potential Energy:</strong><br>
-                            PE = k × (q₁ × q₂) / r
                         </div>
                     </div>
                 </div>
@@ -71,6 +74,28 @@
                     <div class="controls">
                         <button id="pauseBtn" class="control-btn">Pause</button>
                         <button id="resetBtn" class="control-btn">Reset</button>
+                        
+                        <div class="control-group">
+                            <label for="elementSelector">
+                                Select Element: <span id="elementName">Carbon</span>
+                            </label>
+                            <select id="elementSelector" class="element-select">
+                                <option value="1">Hydrogen (H)</option>
+                                <option value="2">Helium (He)</option>
+                                <option value="3">Lithium (Li)</option>
+                                <option value="6" selected>Carbon (C)</option>
+                                <option value="7">Nitrogen (N)</option>
+                                <option value="8">Oxygen (O)</option>
+                                <option value="10">Neon (Ne)</option>
+                                <option value="11">Sodium (Na)</option>
+                                <option value="18">Argon (Ar)</option>
+                                <option value="26">Iron (Fe)</option>
+                                <option value="29">Copper (Cu)</option>
+                                <option value="47">Silver (Ag)</option>
+                                <option value="79">Gold (Au)</option>
+                                <option value="92">Uranium (U)</option>
+                            </select>
+                        </div>
                         
                         <div class="control-group">
                             <label for="particleSlider">
@@ -106,20 +131,36 @@
                     <h2>Legend</h2>
                     <div class="legend">
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #00ffff;"></div>
-                            <span>Electron (e⁻)</span>
+                            <div class="legend-color" style="background: rgba(0, 255, 255, 0.3);"></div>
+                            <span>s-orbital (spherical)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: rgba(255, 100, 255, 0.3);"></div>
+                            <span>p-orbital (px, py, pz)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: rgba(255, 255, 0, 0.3);"></div>
+                            <span>d-orbital (cloverleaf)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: rgba(255, 153, 51, 0.3);"></div>
+                            <span>f-orbital (complex)</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-color" style="background: #ff4444;"></div>
-                            <span>Proton (p⁺)</span>
+                            <span>Proton (nucleus)</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-color" style="background: #cccccc;"></div>
-                            <span>Neutron (n)</span>
+                            <span>Neutron (nucleus)</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background: linear-gradient(90deg, #ff00ff, #00ff00, #ffff00);"></div>
-                            <span>Quarks</span>
+                            <div class="legend-color" style="background: linear-gradient(90deg, #ff00ff, #00ff00);"></div>
+                            <span>Quarks (up/down)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ffff00;"></div>
+                            <span>Gluons (strong force)</span>
                         </div>
                     </div>
                 </div>
@@ -130,6 +171,7 @@
     <script src="particle.js"></script>
     <script src="physics.js"></script>
     <script src="simulation.js"></script>
+    <script src="simulation3d.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
