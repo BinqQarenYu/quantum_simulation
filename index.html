@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Particle Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quantum Particle Simulation</h1>
+        <div class="main-content">
+            <div class="canvas-container">
+                <canvas id="simulationCanvas"></canvas>
+            </div>
+            <div class="control-panel">
+                <div class="panel-section">
+                    <h2>Physics Formulas</h2>
+                    <div class="formula-list">
+                        <div class="formula">
+                            <strong>Coulomb's Law:</strong><br>
+                            F = k × (q₁ × q₂) / r²
+                        </div>
+                        <div class="formula">
+                            <strong>Newton's 2nd Law:</strong><br>
+                            F = ma → a = F / m
+                        </div>
+                        <div class="formula">
+                            <strong>Velocity Update:</strong><br>
+                            v = v₀ + at
+                        </div>
+                        <div class="formula">
+                            <strong>Position Update:</strong><br>
+                            x = x₀ + vt
+                        </div>
+                        <div class="formula">
+                            <strong>Kinetic Energy:</strong><br>
+                            KE = ½mv²
+                        </div>
+                        <div class="formula">
+                            <strong>Potential Energy:</strong><br>
+                            PE = k × (q₁ × q₂) / r
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel-section">
+                    <h2>Statistics</h2>
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-label">Particles:</span>
+                            <span class="stat-value" id="particleCount">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Total Energy:</span>
+                            <span class="stat-value" id="totalEnergy">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Avg Velocity:</span>
+                            <span class="stat-value" id="avgVelocity">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">FPS:</span>
+                            <span class="stat-value" id="fps">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2>Controls</h2>
+                    <div class="controls">
+                        <button id="pauseBtn" class="control-btn">Pause</button>
+                        <button id="resetBtn" class="control-btn">Reset</button>
+                        
+                        <div class="control-group">
+                            <label for="particleSlider">
+                                Particle Count: <span id="particleSliderValue">30</span>
+                            </label>
+                            <input type="range" id="particleSlider" min="5" max="100" value="30" step="5">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="forceSlider">
+                                Force Strength: <span id="forceSliderValue">1.0</span>
+                            </label>
+                            <input type="range" id="forceSlider" min="0.1" max="3.0" value="1.0" step="0.1">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="timeSlider">
+                                Time Speed: <span id="timeSliderValue">1.0x</span>
+                            </label>
+                            <input type="range" id="timeSlider" min="0.1" max="3.0" value="1.0" step="0.1">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="zoomSlider">
+                                Zoom: <span id="zoomSliderValue">1.0x</span>
+                            </label>
+                            <input type="range" id="zoomSlider" min="0.5" max="3.0" value="1.0" step="0.1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2>Legend</h2>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #00ffff;"></div>
+                            <span>Electron (e⁻)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff4444;"></div>
+                            <span>Proton (p⁺)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #cccccc;"></div>
+                            <span>Neutron (n)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(90deg, #ff00ff, #00ff00, #ffff00);"></div>
+                            <span>Quarks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="particle.js"></script>
+    <script src="physics.js"></script>
+    <script src="simulation.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
